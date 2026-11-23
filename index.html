@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora Científica - BTH</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body class="bg-black text-light d-flex justify-content-center align-items-center min-vh-100 p-3">
+
+  <div class="card bg-dark text-light border-secondary shadow-lg col-12 col-sm-9 col-md-6 col-lg-4">
+    <div class="card-header border-secondary d-flex justify-content-between align-items-center">
+      <span class="badge bg-secondary">BTH • 5.º SEC</span>
+      <span class="fw-bold small tracking-wide">CALCULADORA CIENTÍFICA</span>
+    </div>
+
+    <div class="card-body">
+      <!-- Área de visualización -->
+      <div class="bg-black rounded p-2 mb-3 border border-secondary">
+        <p id="historial" class="text-end text-secondary small mb-1 font-monospace" style="min-height: 1.25rem;"></p>
+        <input type="text" id="pantalla" class="form-control form-control-lg bg-black text-end text-success fw-bold fs-2 border-0 font-monospace" value="0" readonly>
+      </div>
+
+      <!-- Fila 1: sin, cos, tan, √ -->
+      <div class="row g-2 mb-2">
+        <div class="col-3">
+          <button type="button" class="btn btn-outline-info w-100 fw-semibold py-2" onclick="calcularCientifica('sin')">sin</button>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-outline-info w-100 fw-semibold py-2" onclick="calcularCientifica('cos')">cos</button>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-outline-info w-100 fw-semibold py-2" onclick="calcularCientifica('tan')">tan</button>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-outline-info w-100 fw-semibold py-2" onclick="calcularCientifica('sqrt')">√</button>
+        </div>
+      </div>
+
+      <!-- Fila 2: x², log, π, ± -->
+      <div class="row g-2 mb-2">
+        <div class="col-3">
+          <button type="button" class="btn btn-outline-info w-100 fw-semibold py-2" onclick="calcularCientifica('pow2')">x²</button>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-outline-info w-100 fw-semibold py-2" onclick="calcularCientifica('log')">log</button>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-outline-info w-100 fw-semibold py-2" onclick="insertarPi()">π</button>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-outline-info w-100 fw-semibold py-2" onclick="cambiarSigno()">±</button>
+        </div>
+      </div>
+
+      <!-- Fila 3: C, ⌫, %, ÷ -->
+      <div class="row g-2 mb-2">
+        <div class="col-3">
+          <button type="button" class="btn btn-danger w-100 fw-bold py-2" onclick="limpiarPantalla()">C</button>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-danger w-100 fw-bold py-2" onclick="borrarUltimo()">⌫</button>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-warning w-100 fw-bold py-2" onclick="agregarValor('%')">%</button>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-warning w-100 fw-bold py-2" onclick="agregarValor('÷')">÷</button>
+        </div>
+      </div>
+
+      <!-- Fila 4: 7, 8, 9, × -->
+      <div class="row g-2 mb-2">
+        <div class="col-3">
+          <button type="button" class="btn btn-secondary w-100 fw-bold py-2" onclick="agregarValor('7')">7</button>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-secondary w-100 fw-bold py-2" onclick="agregarValor('8')">8</button>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-secondary w-100 fw-bold py-2" onclick="agregarValor('9')">9</button>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-warning w-100 fw-bold py-2" onclick="agregarValor('×')">×</button>
+        </div>
+      </div>
+
+      <!-- Fila 5: 4, 5, 6, − -->
+      <div class="row g-2 mb-2">
+        <div class="col-3">
+          <button type="button" class="btn btn-secondary w-100 fw-bold py-2" onclick="agregarValor('4')">4</button>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-secondary w-100 fw-bold py-2" onclick="agregarValor('5')">5</button>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-secondary w-100 fw-bold py-2" onclick="agregarValor('6')">6</button>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-warning w-100 fw-bold py-2" onclick="agregarValor('−')">−</button>
+        </div>
+      </div>
+
+      <!-- Fila 6: 1, 2, 3, + -->
+      <div class="row g-2 mb-2">
+        <div class="col-3">
+          <button type="button" class="btn btn-secondary w-100 fw-bold py-2" onclick="agregarValor('1')">1</button>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-secondary w-100 fw-bold py-2" onclick="agregarValor('2')">2</button>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-secondary w-100 fw-bold py-2" onclick="agregarValor('3')">3</button>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-warning w-100 fw-bold py-2" onclick="agregarValor('+')">+</button>
+        </div>
+      </div>
+
+      <!-- Fila 7: 00, 0, ., = -->
+      <div class="row g-2">
+        <div class="col-3">
+          <button type="button" class="btn btn-secondary w-100 fw-bold py-2" onclick="agregarValor('00')">00</button>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-secondary w-100 fw-bold py-2" onclick="agregarValor('0')">0</button>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-secondary w-100 fw-bold py-2" onclick="agregarValor('.')">.</button>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-success w-100 fw-bold py-2" onclick="calcularResultado()">=</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
